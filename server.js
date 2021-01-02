@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const { v4: uuidv4 } = require('uuid');
+const {
+    v4: uuidv4
+} = require('uuid');
 // const fs = require('fs')
 // const https = require('https')
 // const options = {
@@ -12,7 +14,8 @@ const { v4: uuidv4 } = require('uuid');
 // const httpsServer = https.createServer(options, app)
 // const io = require('socket.io')(httpsServer)
 
-const PORT = 3030;
+// const PORT = 3030;
+const PORT = process.env.PORT
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -20,9 +23,11 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.redirect(`/${uuidv4()}`);
 });
- 
+
 app.get('/:room', (req, res) => {
-    res.render('room', {roomId: req.params.room});
+    res.render('room', {
+        roomId: req.params.room
+    });
 });
 
 io.on('connection', socket => {
@@ -38,7 +43,7 @@ io.on('connection', socket => {
 });
 
 server.listen(PORT, () => {
-   console.log(`Server up and running on port: ${PORT}`);
+    console.log(`Server up and running on port: ${PORT}`);
 });
 // httpsServer.listen(PORT, () => {
 //     console.log(`Server up and running on port: ${PORT}`, httpsServer.address().address, httpsServer.address().port);
